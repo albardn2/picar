@@ -46,6 +46,10 @@ def interpolate(numpy_map,max_distance):
         point_two = point[1]
         d = distance(point_one, point_two)
         if d < max_distance:
+            if point_two[1] == point_one[1]:
+                for y in range(min(point_one[0],point_two[0]) + 1,max(point_one[0],point_two[0])):
+                    numpy_map[y][point_two[1]] = 1
+                continue
             m = (point_two[0] - point_one[0])/(point_two[1] - point_one[1])
             b =  point_one[0] - (m*point_one[1])
             diff = abs(point_one[1] - point_two[1])
