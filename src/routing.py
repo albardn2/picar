@@ -37,9 +37,9 @@ def route(numpy_map,start = None,goal=None):
     start, end = (0,center_x), goal
     came_from, cost_so_far = a_star_search(grid, start, goal)
 
-    draw_grid(grid, point_to=came_from, start=start, goal=goal)
-    print()
-    draw_grid(grid, path=reconstruct_path(came_from, start=start, goal=goal))
+    # draw_grid(grid, point_to=came_from, start=start, goal=goal)
+    # print()
+    # draw_grid(grid, path=reconstruct_path(came_from, start=start, goal=goal))
 
     path =  reconstruct_path(came_from, start=start, goal=goal)
     navigation = get_navigation_instructions(path)

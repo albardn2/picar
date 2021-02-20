@@ -12,7 +12,7 @@ from routing import route
 Final_destination = (100,100) # (y,x) from origin
 
 def main_route(final_destination = None):
-    numpy_map = main_map_function(max(final_destination) * 3)
+    numpy_map = main_map_function(max(final_destination) * 2 + 1)
     nav = route(numpy_map[0],goal=Final_destination)
     return nav
 
