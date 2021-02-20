@@ -4,11 +4,6 @@ import math
 import numpy as np
 import itertools
 
-
-
-
-
-
 def get_x_y_coordinates(distance_list):
     coordinates_list = []
     for d,a in distance_list:
@@ -81,23 +76,17 @@ def add_clearance(numpy_map,threshold):
 
 
 def main_map_function(map_size):
-
     dist_list = get_distances_list(90, -90, 5)
     if dist_list == []:
         dist_list = get_distances_list(90,-90,5)
-
-
     c = get_x_y_coordinates(dist_list)
     numpy_map = get_numpy_map(c,map_size)
     numpy_map_interpolated   = interpolate(numpy_map,10)
     numpy_map_clearance = add_clearance(numpy_map_interpolated,5)
 
-    return numpy_map_clearance
+    return (numpy_map_clearance, math.floor(map_size/2))
 
-
-
-
-main_map_function(201)
+# main_map_function(201)
 # c = get_x_y_coordinates(dist_list)
 # np.set_printoptions(threshold=np.inf)
 # r = get_numpy_map(c,201)
