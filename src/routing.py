@@ -1,4 +1,3 @@
-
 from algorithms_interface import *
 from math import floor
 import numpy as np
@@ -36,12 +35,9 @@ def route(numpy_map,start = None,goal=None):
     grid.walls = [(i,j) for i,j in zip(walls[0],walls[1])]
     start, end = (0,center_x), goal
     came_from, cost_so_far = a_star_search(grid, start, goal)
-
     # draw_grid(grid, point_to=came_from, start=start, goal=goal)
     # print()
     # draw_grid(grid, path=reconstruct_path(came_from, start=start, goal=goal))
-
     path =  reconstruct_path(came_from, start=start, goal=goal)
     navigation = get_navigation_instructions(path)
-
     return navigation

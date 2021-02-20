@@ -17,15 +17,18 @@ def move_cm_forward(distance):
     pcar.stop()
     return total_dist
 
-def car_orientation(orientation):
+def car_orientation(current,final):
+    if final  == current:
+        return
+
     distance = 2*13*math.pi/4
     t = time.time()
     total_dist = 0
-    if orientation == "left":
-        pcar.turn_left(50)
-    elif orientation == "right":
+    if (current == "F" and final == "R") or (current == "R" and final == "B") or (current == "L" and final = "F"):
         pcar.turn_right(50)
-    elif orientation == "back":
+    elif (current == "F" and final == "L") or (current == "R" and final == "F") or (current == "L" and final == "B"):
+        pcar.turn_left(50)
+    elif (current == "F" and final == "B") or (current == "R" and final == "L") or (current == "L" and final =="R"):
         pcar.turn_left(50)
         distance *=2
     previous_time = t
