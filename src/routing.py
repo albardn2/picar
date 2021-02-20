@@ -29,10 +29,12 @@ def get_navigation_instructions(path):
     return directions
 
 def route(numpy_map,start = None,goal=None):
+    center_x = floor(numpy_map.shape[1]/2)
+    goal[1] = goal[1] + center_x
     walls = np.where(numpy_map == 1)
     grid = GridWithWeights(numpy_map.shape[1], numpy_map.shape[0])
     grid.walls = [(i,j) for i,j in zip(walls[0],walls[1])]
-    start, end = (0,floor(numpy_map.shape[1]/2)), goal
+    start, end = (0,center_x), goal
     came_from, cost_so_far = a_star_search(grid, start, goal)
 
 
