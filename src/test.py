@@ -9,14 +9,12 @@ from routing import route
 # TRACK LOCATION
 
 
-Final_destination = (100,100)   # y,x, from origin
+Final_destination = (100,100) # (y,x) from origin
 
 def main_route(final_destination = None):
     numpy_map = main_map_function(max(final_destination) * 3)
-    nav = route(numpy_map,goal=Final_destination)
+    nav = route(numpy_map[0],goal=Final_destination)
     return nav
-
-
 
 main_route((100,100))
 # def drive(navigation):
