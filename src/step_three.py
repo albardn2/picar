@@ -10,7 +10,7 @@ def get_distances_list(max_angle = 45, min_angle = -45,step_increment = 9):
         if servo_angle >= max_angle:
             step_increment = -abs(step_increment)
             while servo_angle >= min_angle:
-                angle_list.append((pcar.us.get_distance()/2,servo_angle))
+                angle_list.append((pcar.us.get_distance(),servo_angle))
                 pcar.servo.set_angle(servo_angle + step_increment)
                 servo_angle = servo_angle + step_increment
                 time.sleep(0.04)
@@ -19,7 +19,7 @@ def get_distances_list(max_angle = 45, min_angle = -45,step_increment = 9):
         elif servo_angle <= min_angle:
             step_increment = abs(step_increment)
             while servo_angle <= max_angle:
-                angle_list.append((pcar.us.get_distance()/2,servo_angle))
+                angle_list.append((pcar.us.get_distance(),servo_angle))
                 pcar.servo.set_angle(servo_angle + step_increment)
                 servo_angle = servo_angle + step_increment
                 time.sleep(0.04)

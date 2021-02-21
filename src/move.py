@@ -5,6 +5,7 @@ import math
 pcar.start_speed_thread()
 
 def move_cm_forward(distance):
+    distance = abs(distance)
     t = time.time()
     total_dist = 0
     pcar.forward(50)
@@ -24,7 +25,7 @@ def car_orientation(current,final):
     distance = 2*13*math.pi/4
     t = time.time()
     total_dist = 0
-    if (current == "F" and final == "R") or (current == "R" and final == "B") or (current == "L" and final = "F"):
+    if (current == "F" and final == "R") or (current == "R" and final == "B") or (current == "L" and final == "F"):
         pcar.turn_right(50)
     elif (current == "F" and final == "L") or (current == "R" and final == "F") or (current == "L" and final == "B"):
         pcar.turn_left(50)
@@ -41,6 +42,6 @@ def car_orientation(current,final):
     return total_dist
 
 # time.sleep(5)
-# move_cm_forward(300)
+# move_cm_forward(25)
 # car_orientation("left")
 # move_cm_forward(30)
