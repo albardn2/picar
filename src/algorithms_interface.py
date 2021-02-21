@@ -180,6 +180,9 @@ def dijkstra_search(graph: WeightedGraph, start: Location, goal: Location):
 
 def reconstruct_path(came_from: Dict[Location, Location],
                      start: Location, goal: Location) -> List[Location]:
+    print(start)
+    print(goal)
+    print(came_from)
     current: Location = goal
     path: List[Location] = []
     while current != start:
