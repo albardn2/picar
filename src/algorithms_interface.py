@@ -123,8 +123,8 @@ class GridWithWeights(SquareGrid):
                 return self.weights.get(to_node, 1)
             else:
                 return self.weights.get(to_node, 1) + 2
-
-        return self.weights.get(to_node, 1)
+        except:
+            return self.weights.get(to_node, 1)
 
 diagram4 = GridWithWeights(10, 10)
 diagram4.walls = [(1, 7), (1, 8), (2, 7), (2, 8), (3, 7), (3, 8)]

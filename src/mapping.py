@@ -68,14 +68,14 @@ def add_clearance(numpy_map,threshold):
         numpy_map[max(y-threshold,0):min(y + threshold+1,shape_y),max(x-threshold,0):min(x+threshold+1,shape_x)] = 1
     return numpy_map
 
-def main_map_function(map_size):
+def main_map_function(map_size,clearance = 10):
     dist_list = get_distances_list(90, -90, 5)
     if dist_list == []:
         dist_list = get_distances_list(90,-90,5)
     c = get_x_y_coordinates(dist_list)
     numpy_map = get_numpy_map(c,map_size)
     numpy_map_interpolated   = interpolate(numpy_map,10)
-    numpy_map_clearance = add_clearance(numpy_map_interpolated,5)
+    numpy_map_clearance = add_clearance(numpy_map_interpolated,clearance)
 
     return (numpy_map_clearance, math.floor(map_size/2))
 
