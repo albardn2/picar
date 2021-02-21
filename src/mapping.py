@@ -65,15 +65,8 @@ def add_clearance(numpy_map,threshold):
     for point in r:
         y = point[0]
         x = point[1]
-        for i in range(1,threshold+1):
-
-            numpy_map[y,x:min(x+i+1,shape_x)] = 1
-            numpy_map[y,max(x-i,0):x] = 1
-            numpy_map[y:min(y+i+1,shape_y),x] = 1
-            numpy_map[max(y-i,0):y,x] = 1
-
+        numpy_map[max(y-threshold,0):min(y + threshold+1,shape_y),max(x-threshold,0):min(x+threshold+1,shape_x)] = 1
     return numpy_map
-
 
 def main_map_function(map_size):
     dist_list = get_distances_list(90, -90, 5)
