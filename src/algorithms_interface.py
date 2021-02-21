@@ -110,7 +110,20 @@ class GridWithWeights(SquareGrid):
         super().__init__(width, height)
         self.weights: Dict[GridLocation, float] = {}
 
-    def cost(self, from_node: GridLocation, to_node: GridLocation) -> float:
+    def cost(self, from_node: GridLocation, to_node: GridLocation, came_from) -> float:
+        try:
+            parent = came_from[from_node]
+            x_diff_parent =   from_node[1] - parent[1]
+            y_diff_parent = from_node[0] - parent[0]
+
+            x_diff = to_node[1] - from_node[1]
+            y_diff = to_node[0] - from_node[0]
+
+            if (x_diff_parent == x_diff) and (y_diff_parent == y_diff):
+                return self.weights.get(to_node, 1)
+            else:
+                return self.weights.get(to_node, 1) + 2
+
         return self.weights.get(to_node, 1)
 
 diagram4 = GridWithWeights(10, 10)
@@ -196,7 +209,7 @@ def a_star_search(graph: WeightedGraph, start: Location, goal: Location):
             break
 
         for next in graph.neighbors(current):
-            new_cost = cost_so_far[current] + graph.cost(current, next)
+            new_cost = cost_so_far[current] + graph.cost(current,next,came_from)
             if next not in cost_so_far or new_cost < cost_so_far[next]:
                 cost_so_far[next] = new_cost
                 priority = new_cost + heuristic(next, goal)
