@@ -11,7 +11,7 @@ def move_cm_forward(distance):
     pcar.forward(50)
     previous_time = t
     while total_dist < distance:
-        print(total_dist)
+        # print(total_dist)
         current_time = time.time()
         total_dist += pcar.speed_val() * (current_time - previous_time)
         previous_time = current_time

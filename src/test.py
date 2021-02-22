@@ -56,6 +56,7 @@ def dist_less_than_1_m(nav,threshold):
 def main_route(final_destination = None):
 
     while final_destination != (0,0):
+        print(final_destination)
         numpy_map = main_map_function(max(final_destination) * 2 + 1,clearance=3,interpolate_value=2)
         # plt.imshow(numpy_map[0])
         # plt.show()
