@@ -12,15 +12,10 @@ import matplotlib.pyplot as plt
 settings.init()
 
 Final_destination = (30,0) # (y,x) from origin
-def main_route(final_destination = None):
-    numpy_map = main_map_function(max(final_destination) * 2 + 1,clearance=3,interpolate_value=2)
-    plt.imshow(numpy_map[0])
-    plt.show()
-    nav = route(numpy_map[0],goal=Final_destination)
-    return nav
+
 
 # main_route((100,100))
-def drive(navigatio):
+def drive(navigation):
     # current_orientation = "Forward"
     for nav in navigation:
         direction = nav[0]
@@ -28,7 +23,6 @@ def drive(navigatio):
         if distance > 0 and direction == "H":
             car_orientation(settings.global_orientation,"L")
             settings.global_orientation = "L"
-            move_cm_forward(distance)
         elif distance < 0 and direction == "H":
             car_orientation(settings.global_orientation,"R")
             settings.global_orientation = "R"
@@ -52,13 +46,35 @@ def dist_less_than_1_m(nav,threshold):
             dist_v += n[1]
         elif n[0] == "H":
             dist_h += n[1]
-        
+
         total_distance = distance((0,0),(dist_v,dist_h))
         if total_distance > threshold:
-            return nav[0:i+1]
+            return (nav[0:i+1],dist_v,dist_h)
         i+=1
-        
-    
+
+
+def main_route(final_destination = None):
+
+    while final_destination != (0,0):
+        numpy_map = main_map_function(max(final_destination) * 2 + 1,clearance=3,interpolate_value=2)
+        # plt.imshow(numpy_map[0])
+        # plt.show()
+        nav = route(numpy_map[0],goal=Final_destination)
+        final_nav,dist_v,dist_h = dist_less_than_1_m(nav,21)
+        drive(final_nav)
+        final_destination = (final_destination[0]-dist_v,final_destination[1]-dist_h)
+        if settings.global_orientation == "R":
+            final_destination = (-final_destination[1],final_destination[0])
+        elif settings.global_orientation == "L":
+            final_destination  = (final_destination[1],-final_destination[0])
+        elif settings.global_orientation == "B":
+            final_destination  = (-final_destination[0],-final_destination[1])
+
+        # return nav
+
+
+
+
 nav = main_route(Final_destination)
 print(nav)
 print(dist_less_than_1_m(nav,21))
