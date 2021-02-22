@@ -1,4 +1,4 @@
-from mapping import main_map_function
+from mapping import main_map_function,distance
 from move import move_cm_forward, car_orientation
 import picar_4wd as pcar
 from routing import route
@@ -11,16 +11,16 @@ import matplotlib.pyplot as plt
 # GLOBAL ORIENATION,
 settings.init()
 
-Final_destination = (40,0) # (y,x) from origin
+Final_destination = (30,0) # (y,x) from origin
 def main_route(final_destination = None):
-    numpy_map = main_map_function(max(final_destination) * 2 + 1,clearance=4,interpolate_value=2)
-#     plt.imshow(numpy_map[0])
-#     plt.show()
+    numpy_map = main_map_function(max(final_destination) * 2 + 1,clearance=3,interpolate_value=2)
+    plt.imshow(numpy_map[0])
+    plt.show()
     nav = route(numpy_map[0],goal=Final_destination)
     return nav
 
 # main_route((100,100))
-def drive(navigation):
+def drive(navigatio):
     # current_orientation = "Forward"
     for nav in navigation:
         direction = nav[0]
@@ -41,8 +41,27 @@ def drive(navigation):
             car_orientation(settings.global_orientation,"B")
             settings.global_orientation = "B"
             move_cm_forward(distance)
+
+def dist_less_than_1_m(nav,threshold):
+    dist_v = 0
+    dist_h = 0
+    total_distance = 0
+    i = 0
+    for n in nav:
+        if n[0] == "V":
+            dist_v += n[1]
+        elif n[0] == "H":
+            dist_h += n[1]
+        
+        total_distance = distance((0,0),(dist_v,dist_h))
+        if total_distance > threshold:
+            return nav[0:i+1]
+        i+=1
+        
+    
 nav = main_route(Final_destination)
 print(nav)
+print(dist_less_than_1_m(nav,21))
 settings.global_orientation = "F"
-drive(nav)
+# drive(nav)
 # x = move_cm_forward(25) [('V', 48), ('H', 4), ('V', 1), ('H', 17), ('V', 5), ('H', 5), ('V', 2), ('H', -5), ('V', 5), ('H', -21), ('V', 139)]
