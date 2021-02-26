@@ -13,5 +13,5 @@ tf_object_detection.start()
 while True:
     if settings.stop_sign == True:
        time.sleep(3)
-       pcar.forward(1)
+       pcar.stop()
     pcar.forward(1)

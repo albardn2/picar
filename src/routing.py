@@ -41,4 +41,4 @@ def route(numpy_map,start = None,goal=None):
     # draw_grid(grid, path=reconstruct_path(came_from, start=start, goal=goal))
     path =  reconstruct_path(came_from, start=start, goal=goal)
     navigation = get_navigation_instructions(path)
-    return navigation
+    return (navigation,path)

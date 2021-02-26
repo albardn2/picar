@@ -92,8 +92,13 @@ def detect_objects(interpreter, image, threshold,labels):
       results.append(result)
       if labels[result['class_id']] == "stop sign":
           print("STOP")
-          pcar.stop()
           settings.stop_sign = True
+          
+  if "person" not in [labels[r['class_id']] for r in results]:
+      settings.person = False
+  else:
+      settings.person = True
+        
   return results
 
 
@@ -136,7 +141,7 @@ def main():
 
   with picamera.PiCamera(
       resolution=(CAMERA_WIDTH, CAMERA_HEIGHT), framerate=30) as camera:
-#     camera.start_preview()
+    camera.start_preview()
     try:
       stream = io.BytesIO()
       annotator = Annotator(camera)
@@ -149,10 +154,10 @@ def main():
         results = detect_objects(interpreter, image, args.threshold,labels)
         elapsed_ms = (time.monotonic() - start_time) * 1000
 
-#         annotator.clear()
-#         annotate_objects(annotator, results, labels)
-#         annotator.text([5, 0], '%.1fms' % (elapsed_ms))
-#         annotator.update()
+        annotator.clear()
+        annotate_objects(annotator, results, labels)
+        annotator.text([5, 0], '%.1fms' % (elapsed_ms))
+        annotator.update()
 
         stream.seek(0)
         stream.truncate()
@@ -161,5 +166,5 @@ def main():
       camera.stop_preview()
 
 
-# if __name__ == '__main__':
-#   main()
+if __name__ == '__main__':
+  main()

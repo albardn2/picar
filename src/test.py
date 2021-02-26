@@ -4,6 +4,9 @@ import picar_4wd as pcar
 from routing import route
 import settings
 import matplotlib.pyplot as plt
+import time
+import threading
+from detect_picamera import main
 # FIND SERVO MEASUREMENTS
 # FIND ENGINE SLIPPAGE
 # RERUN MAPPING AND ROUTING AFTER THRESHOLD
@@ -11,18 +14,23 @@ import matplotlib.pyplot as plt
 # GLOBAL ORIENATION,
 settings.init()
 
-Final_destination = (30,0) # (y,x) from origin
+tf_object_detection = threading.Thread(target=main, name="object_detection_thread")
+tf_object_detection.start()
+
+# Final_destination = (30,0) # (y,x) from origin
 
 
 # main_route((100,100))
-def drive(navigation):
+def drive(navigation,multiplyer):
     # current_orientation = "Forward"
     for nav in navigation:
         direction = nav[0]
-        distance  = nav[1] * 5
+        distance  = nav[1] * multiplyer
+        print("DISTANCE {}".format(distance))
         if distance > 0 and direction == "H":
             car_orientation(settings.global_orientation,"L")
             settings.global_orientation = "L"
+            move_cm_forward(distance)
         elif distance < 0 and direction == "H":
             car_orientation(settings.global_orientation,"R")
             settings.global_orientation = "R"
@@ -51,18 +59,25 @@ def dist_less_than_1_m(nav,threshold):
         if total_distance > threshold:
             return (nav[0:i+1],dist_v,dist_h)
         i+=1
+    return (nav,dist_v,dist_h)
 
-
+def draw_path_on_array(numpy_map,path):
+    for p in path:
+        numpy_map[p] = 0.5
+    return numpy_map
 def main_route(final_destination = None):
 
     while final_destination != (0,0):
         print(final_destination)
-        numpy_map = main_map_function(max(final_destination) * 2 + 1,clearance=3,interpolate_value=2)
-        # plt.imshow(numpy_map[0])
-        # plt.show()
-        nav = route(numpy_map[0],goal=Final_destination)
-        final_nav,dist_v,dist_h = dist_less_than_1_m(nav,21)
-        drive(final_nav)
+        numpy_map,center = main_map_function(max(final_destination) * 2 + 1,clearance=3,interpolate_value=6)
+        nav,path = route(numpy_map,goal=final_destination)
+        print("nav",nav)
+        plt.imsave("path-{}.png".format(final_destination[1]),draw_path_on_array(numpy_map,path))
+#         plt.show()
+        final_nav,dist_v,dist_h = dist_less_than_1_m(nav,30)
+        
+        print("final nav",final_nav)
+        drive(final_nav,3)
         final_destination = (final_destination[0]-dist_v,final_destination[1]-dist_h)
         if settings.global_orientation == "R":
             final_destination = (-final_destination[1],final_destination[0])
@@ -71,14 +86,15 @@ def main_route(final_destination = None):
         elif settings.global_orientation == "B":
             final_destination  = (-final_destination[0],-final_destination[1])
 
-        # return nav
+ 
 
-
-
-
-nav = main_route(Final_destination)
-print(nav)
-print(dist_less_than_1_m(nav,21))
-settings.global_orientation = "F"
+    # 
+    # nav = main_route(Final_destination)
+    # print(nav)
+# print(dist_less_than_1_m([('H', 4)],30))
+# settings.global_orientation = "F"
 # drive(nav)
 # x = move_cm_forward(25) [('V', 48), ('H', 4), ('V', 1), ('H', 17), ('V', 5), ('H', 5), ('V', 2), ('H', -5), ('V', 5), ('H', -21), ('V', 139)]
+time.sleep(5)
+main_route((100,0))
+# drive([('V', 2`0)],3)
