@@ -76,14 +76,17 @@ def main_map_function(map_size,clearance = 1,interpolate_value = 1):
     c = get_x_y_coordinates(dist_list)
     numpy_map = get_numpy_map(c,map_size)
 #     plt.figure()
-#     plt.imshow(numpy_map)
-    
+    plt.imshow(numpy_map)
+    plt.imsave("image-1.png",numpy_map)
+
     numpy_map_interpolated   = interpolate(numpy_map,interpolate_value)
 #     plt.figure()
-#     plt.imshow(numpy_map_interpolated)
+    plt.imshow(numpy_map_interpolated)
+    plt.imsave("image-2.png",numpy_map_interpolated)
     numpy_map_clearance = add_clearance(numpy_map_interpolated,clearance)
 #     plt.figure()
-#     plt.imshow(numpy_map_clearance)
+    plt.imshow(numpy_map_clearance)
+    plt.imsave("image-3.png",numpy_map_clearance)
 #     plt.show()
     return (numpy_map_clearance, math.floor(map_size/2))
 
@@ -111,4 +114,4 @@ def main_map_function(map_size,clearance = 1,interpolate_value = 1):
 # # Plotting point using sactter method
 # plt.scatter(X,Y)
 # plt.show()
-# main_map_function(100,5,10)
+main_map_function(100,3,10)
